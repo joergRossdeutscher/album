@@ -4,3 +4,4 @@ app/sqlite.db
 var/bootstrap.php.cache
 var/sessions/dev/*
 /vendor
+/.idea
