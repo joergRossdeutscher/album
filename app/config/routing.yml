@@ -1,0 +1,9 @@
+index:
+    path:      /
+    defaults:  { _controller: AppBundle:Default:index }
+listimages:
+    path:      /listimages/{mediadriveid}/{mediafolderid}
+    defaults:  { _controller: AppBundle:Default:listimages, mediadriveid: "", mediafolderid: "" }
+listfolders:
+    path:      /listfolders/{mediadriveid}
+    defaults:  { _controller: AppBundle:Default:listfolders, mediadriveid: "" }

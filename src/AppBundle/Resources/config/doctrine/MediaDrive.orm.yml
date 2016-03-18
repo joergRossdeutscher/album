@@ -1,0 +1,22 @@
+AppBundle\Entity\MediaDrive:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\MediaDriveRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        mediaFileBaseFolder:
+            type: text
+        previewBaseFolder:
+            type: text
+        thumbnailBaseFolder:
+            type: text
+    lifecycleCallbacks: {  }
+    oneToMany:
+        mediaFolders:
+            targetEntity: AppBundle\Entity\MediaFolder
+            mappedBy: mediaDrive

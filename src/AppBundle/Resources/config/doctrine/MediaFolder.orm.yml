@@ -1,0 +1,25 @@
+AppBundle\Entity\MediaFolder:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\MediaFolderRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        path:
+            type: text
+    lifecycleCallbacks: {  }
+    oneToMany:
+        mediaFiles:
+            targetEntity: AppBundle\Entity\MediaFile
+            mappedBy: mediaFolder
+    manyToOne:
+        mediaDrive:
+            targetEntity: AppBundle\Entity\MediaDrive
+            inversedBy: mediaFolder
+            joinColumn:
+                name: mediaDriveId
+                referencedColumnName: id

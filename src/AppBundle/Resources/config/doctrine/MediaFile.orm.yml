@@ -1,0 +1,38 @@
+AppBundle\Entity\MediaFile:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\MediaFileRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        fileName:
+            type: text
+        fileType:
+            type: text
+            nullable: TRUE
+        mediaType:
+            type: text
+        thumbFileName:
+            type: text
+            nullable: TRUE
+        gpsLat:
+            type: float
+            nullable: TRUE
+        gpsLon:
+            type: float
+            nullable: TRUE
+        orientation:
+            type: integer
+            nullable: TRUE
+    lifecycleCallbacks: {  }
+    manyToOne:
+        mediaFolder:
+            targetEntity: AppBundle\Entity\MediaFolder
+            inversedBy: mediaFiles
+            joinColumn:
+                name: media_folder_id
+                referencedColumnName: id
