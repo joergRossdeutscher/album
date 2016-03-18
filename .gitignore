@@ -1,0 +1,6 @@
+var/logs/*
+var/cache
+app/sqlite.db
+var/bootstrap.php.cache
+var/sessions/dev/*
+/vendor
