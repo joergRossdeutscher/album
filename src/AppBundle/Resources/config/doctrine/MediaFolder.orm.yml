@@ -19,7 +19,7 @@ AppBundle\Entity\MediaFolder:
     manyToOne:
         mediaDrive:
             targetEntity: AppBundle\Entity\MediaDrive
-            inversedBy: mediaFolder
+            inversedBy: mediaFolders
             joinColumn:
                 name: mediaDriveId
                 referencedColumnName: id

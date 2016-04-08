@@ -255,4 +255,33 @@ class MediaFile extends \AppBundle\Model\MediaFileFunctions
     {
         return $this->mediaFolder;
     }
+    /**
+     * @var string
+     */
+    private $previewFileName;
+
+
+    /**
+     * Set previewFileName
+     *
+     * @param string $previewFileName
+     *
+     * @return MediaFile
+     */
+    public function setPreviewFileName($previewFileName)
+    {
+        $this->previewFileName = $previewFileName;
+
+        return $this;
+    }
+
+    /**
+     * Get previewFileName
+     *
+     * @return string
+     */
+    public function getPreviewFileName()
+    {
+        return $this->previewFileName;
+    }
 }

@@ -64,9 +64,11 @@ class MediaFileFunctions extends DefaultFunctions
         return $this->getBaseFolder() . '/' . $this->getRelPath();
     }
 
-    public function getThumbBaseFolder()
+    public function getThumbBaseFolder($variant)
     {
-        return $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder();
+        if($variant=='thumbnail') return $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder();
+        if($variant=='preview') return $this->getMediaFolder()->getMediaDrive()->getPreviewBaseFolder();
+        die('Shit: ' . __FILE__ . '|' . __LINE__);
     }
 
     public function initOrientation()
@@ -91,30 +93,42 @@ class MediaFileFunctions extends DefaultFunctions
         return $this;
     }
 
-    public function createThumbnail(){
+    public function getVariantFileName($variant){
+        if($variant=='thumbnail') return $this->getThumbFileName();
+        if($variant=='preview') return $this->getPreviewFileName();
+        die('Shit: ' . __FILE__ . '|' . __LINE__);
+    }
+    public function setVariantFileName($variant, $fileName){
+        if($variant=='thumbnail') return $this->setThumbFileName($fileName);
+        if($variant=='preview') return $this->setPreviewFileName($fileName);
+        die('Shit: ' . __FILE__ . '|' . __LINE__);
+    }
 
-        $thumbDir = $this->getThumbBaseFolder() . '/' . $this->getMediaFolder()->getPath();
+    public function createThumbnail($variant){
+
+        $thumbDir = $this->getThumbBaseFolder($variant) . '/' . $this->getMediaFolder()->getPath();
+
         if( ! is_dir($thumbDir) ){
             \AppBundle\Model\FileHelper::mkdir_p($thumbDir);
         }
 
         if($this->getMediaType()=='image') {
-            $this->setThumbFileName($this->getFileName());
-            $thumbFile = $thumbDir .'/' . $this->getThumbFileName();
+            $this->setVariantFileName($variant, $this->getFileName());
+            $thumbFile = $thumbDir .'/' . $this->getVariantFileName($variant);
             $hiresFile = $this->getFullPath();
-            $this->updateThumbnailImageFile(200, $hiresFile, $thumbFile);
+            $this->updateThumbnailImageFile($variant, $variant == 'thumbnail' ? 200:900, $hiresFile, $thumbFile);
         }
         if($this->getMediaType()=='movie') {
-            $this->setThumbFileName($this->getFileName() . '.gif');
-            $thumbFile = $thumbDir .'/' . $this->getThumbFileName();
+            $this->setVariantFileName($variant, $this->getFileName() . '.gif');
+            $thumbFile = $thumbDir .'/' . $this->getVariantFileName($variant);
             $hiresFile = $this->getFullPath();
-            $this->updateThumbnailMovieFile(200, $hiresFile, $thumbFile);
+            $this->updateThumbnailMovieFile($variant, $variant == 'thumbnail' ? 200:400, $hiresFile, $thumbFile);
         }
 
         return $this;
     }
 
-    function updateThumbnailImageFile($thumbHeight, $hiresFile, $thumbFile )
+    function updateThumbnailImageFile($variant,$thumbHeight, $hiresFile, $thumbFile )
     {
 
         if( @filemtime($thumbFile) == @filemtime($hiresFile) ) return true;
@@ -179,7 +193,7 @@ class MediaFileFunctions extends DefaultFunctions
     }
 
 
-    function updateThumbnailMovieFile($thumbHeight, $filepathOriginal, $filepathThumb )
+    function updateThumbnailMovieFile($variant, $thumbHeight, $filepathOriginal, $filepathThumb )
     {
 
         if( @filemtime($filepathThumb) == @filemtime($filepathOriginal) ) return true;

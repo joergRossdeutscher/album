@@ -86,7 +86,8 @@ class MediaFolderFunctions extends DefaultFunctions
             ->setMediaFolder($this)
             ->initFileAndMediaType()
             ->initOrientation()
-            ->createThumbnail()
+            ->createThumbnail('thumbnail')
+            ->createThumbnail('preview')
             ->getGpsCoordinates();
 
         return $mediaFile;

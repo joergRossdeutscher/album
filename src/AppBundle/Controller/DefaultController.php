@@ -67,4 +67,19 @@ class DefaultController extends Controller
             'mediaFolders' => $mediaFolders,
         ]);
     }
+    public function listdrivesAction(Request $request)
+    {
+
+        $doctrine = $this->get('doctrine');
+        $em = $doctrine->getManager();
+
+        $mediaDriveRepo = $doctrine->getRepository('AppBundle:MediaDrive');
+
+        $mediaDrives = $mediaDriveRepo->findAll();
+
+        return $this->render('default/listdrive.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
+            'mediaDrives' => $mediaDrives,
+        ]);
+    }
 }

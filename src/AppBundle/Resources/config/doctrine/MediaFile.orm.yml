@@ -19,6 +19,9 @@ AppBundle\Entity\MediaFile:
         thumbFileName:
             type: text
             nullable: TRUE
+        previewFileName:
+            type: text
+            nullable: TRUE
         gpsLat:
             type: float
             nullable: TRUE

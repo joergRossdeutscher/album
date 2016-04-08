@@ -7,7 +7,18 @@
             <ul>
             {% for mediaFile in mediaFiles %}
                 {% set mediaFolder=mediaFile.getMediaFolder() %}
-                <li><img src='/{{ mediaDrive.thumbnailBaseFolder() }}/{{ mediaFolder.getPath() }}/{{ mediaFile.thumbFileName }}'></li>
+
+                {% set mediaCssClass="fancybox" %}
+                {% if mediaFile.getMediaType()=='movie' %}
+                    {% set mediaCssClass="fancybox fancybox.iframe" %}
+                {% endif %}
+
+                <!--li><img src='/{{ mediaDrive.thumbnailBaseFolder() }}/{{ mediaFolder.getPath() }}/{{ mediaFile.thumbFileName }}'></li -->
+                <li>
+                    <a data-mediatype="{{ mediaFile.getMediaType() }}" class="{{ mediaCssClass }}" rel="group" href='/{{ mediaDrive.mediaFileBaseFolder }}/{{ mediaFolder.getPath() }}/{{ mediaFile.fileName }}'>
+                        <img src='/{{ mediaDrive.thumbnailBaseFolder() }}/{{ mediaFolder.getPath() }}/{{ mediaFile.thumbFileName }}' alt="" />
+                    </a>
+                </li>
             {% endfor %}
                 </ul>
         </div>
