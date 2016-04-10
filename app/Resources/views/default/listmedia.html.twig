@@ -8,6 +8,9 @@
             {% for mediaFile in mediaFiles %}
                 {% set mediaFolder=mediaFile.getMediaFolder() %}
 
+                {% set previewFullPath=mediaFile.getFullWebPath('preview') %}
+                {% set thumbnailFullPath=mediaFile.getFullWebPath('thumbnail') %}
+
                 {% set mediaCssClass="fancybox" %}
                 {% if mediaFile.getMediaType()=='movie' %}
                     {% set mediaCssClass="fancybox fancybox.iframe" %}
@@ -15,8 +18,8 @@
 
                 <!--li><img src='/{{ mediaDrive.thumbnailBaseFolder() }}/{{ mediaFolder.getPath() }}/{{ mediaFile.thumbFileName }}'></li -->
                 <li>
-                    <a data-mediatype="{{ mediaFile.getMediaType() }}" class="{{ mediaCssClass }}" rel="group" href='/{{ mediaDrive.mediaFileBaseFolder }}/{{ mediaFolder.getPath() }}/{{ mediaFile.fileName }}'>
-                        <img src='/{{ mediaDrive.thumbnailBaseFolder() }}/{{ mediaFolder.getPath() }}/{{ mediaFile.thumbFileName }}' alt="" />
+                    <a data-mediatype="{{ mediaFile.getMediaType() }}" class="{{ mediaCssClass }}" rel="group" href='{{ previewFullPath }}'>
+                        <img src='{{ thumbnailFullPath }}' alt="" />
                     </a>
                 </li>
             {% endfor %}

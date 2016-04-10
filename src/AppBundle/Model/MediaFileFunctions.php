@@ -242,6 +242,29 @@ class MediaFileFunctions extends DefaultFunctions
 #        print_r($fileList);
     }
 
+    public function getFullWebPath($variant){
+        switch ($variant){
+            case "preview":
+                return
+                    '/' .
+                    $this->getMediaFolder()->getMediaDrive()->getPreviewBaseFolder() .'/' .
+                    $this->getMediaFolder()->getPath() . '/' .
+                    $this->getPreviewFileName();
+                    break;
+            case "thumbnail":
+                return
+                    '/' .
+                    $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder() .'/' .
+                    $this->getMediaFolder()->getPath() . '/' .
+                    $this->getThumbFileName();
+                    break;
+            default:
+                die('Hm? ' . __FILE__ . ":" . __LINE__);
+                break;
+        }
+    }
+
+
     /**
      * @param string $filename
      * @param string $delimiter
