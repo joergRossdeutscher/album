@@ -1,59 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <ul>
-            {% for mediaDrive in mediaDrives %}
-                <li class='folder' data-href="http://127.0.0.1:8000/listfolders/{{ mediaDrive.getId() }}">
-                    ƒ {{ mediaDrive.getMediaFileBaseFolder() }}
-                </li>
-            {% endfor %}
-                </ul>
-        </div>
+    <div id="listdrive">
+        <ul>
+        {% for mediaDrive in mediaDrives %}
+            <li class='folder' data-href="/listfolders/{{ mediaDrive.getId() }}">
+                ƒ {{ mediaDrive.getMediaFileBaseFolder() }}
+            </li>
+        {% endfor %}
+            </ul>
     </div>
-{% endblock %}
 
-{% block canvas %}
-        <div id="listfolder">
-            <div class="close">
-                <a href="#" onclick="$('#listfolder .canvas').html('');$('#listfolder').css({display:'none'});return false;">
-                    X</a></div>
-            <div class="canvas"></div>
-        </div>
-
-    <div id="listfiles">
+    <div id="listfolder">
         <div class="close">
-            <a href="#" onclick="$('#listfiles .canvas').html('');$('#listfiles').css({display:'none'});return false;">
-                X</a></div>
+            <a href="#" onclick="$('#listfolder .canvas').html('');$('#listfolder').css({display:'none'}); $('#listdrive').css('display','block'); return false;">
+                CLOSE</a></div>
         <div class="canvas"></div>
     </div>
 
-{% endblock %}
+    <div id="listfiles">
+        <div class="close">
+            <a href="#" onclick="$('#listfiles .canvas').html('');$('#listfiles').css({display:'none'}); $('#listfolder').css('display','block');return false;">
+                CLOSE</a></div>
+        <div class="canvas"></div>
+    </div>
 
-{% block stylesheets %}
-    <style>
-        .folder,
-        .files {
-            cursor:pointer;
-        }
-
-        #listfolder,
-        #listfiles {
-            width:90%;
-            position:absolute;
-            display:none;
-            border:1px solid #ccc;
-            margin:0;
-            padding:0;
-        }
-        #listfolder{  background-color: #bbbbbb;    }
-        #listfiles {  background-color: #999999;    }
-
-        #listfiles li {
-            float:left;
-            list-style-type:none;
-        }
-
-    </style>
 {% endblock %}

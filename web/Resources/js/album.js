@@ -1,7 +1,3 @@
-/**
- * Created by jrossdeutscher on 19.03.16.
- */
-
 function fakelinkFolder(tag) {
     tag.click(function(){
         var url = tag.data('href');
@@ -10,10 +6,12 @@ function fakelinkFolder(tag) {
             $('#listfolder').css({display:'block'});
 
             $('#listfolder .canvas .files').each(function(){ fakelinkFiles($(this))});
+            $('#listdrive').css('display','none');
 
         });
     });
 }
+
 
 function fakelinkFiles(tag) {
     tag.click(function(){
@@ -35,10 +33,11 @@ function fakelinkFiles(tag) {
                         //this.content = "file=" + this.href + " width='" + $width + "' height='" + $height;
                         this.content = '<video width="920" controls><source src="'+this.href+'" type="video/mp4"></video>';
                     } else {
-                        this.content = '<img src="'+this.href+'" width="920" >';
+                        this.content = '<img src="'+this.href+'" style="max-width:920px;max-height:720px;">';
                     }
                 }
             });
+            $('#listfolder').css('display','none');
 
 //            $('#listfiles .canvas .files').each(function(){ fakelinkFiles($(this))});
 

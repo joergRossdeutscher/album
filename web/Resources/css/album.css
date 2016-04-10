@@ -1,0 +1,74 @@
+* {
+    border:0;
+    margin:0;
+    padding:0;
+}
+
+body, html{
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: #000;
+    color: #aaa;
+}
+
+.folder,
+.files {
+    cursor:pointer;
+}
+
+#listdrive,
+#listfolder,
+#listfiles {
+    width:100%;
+    position:absolute;
+    margin:0;
+    padding:0;
+
+    font-size:20px;
+    line-height: 32px;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+}
+
+#listfolder,
+#listfiles {
+    display:none;
+}
+
+#listfiles li {
+    float:left;
+    list-style-type:none;
+    width: 132px;
+    height: 132px;
+    overflow:hidden;
+    position:relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border:3px solid #ccc;
+    border-radius: 5px;
+
+    margin:5px;
+}
+
+.close {
+    font-size:20px;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+    padding:3px;
+    margin:5px;
+    margin-left: 0;
+}
+
+.close a {
+    color:#fff;
+    text-decoration: none;
+    margin:5px;
+    margin-left: 0;
+    border:1px solid #fff;
+    border-radius: 3px;
+    padding:4px;
+}

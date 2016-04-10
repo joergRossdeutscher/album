@@ -70,6 +70,15 @@ class MediaFolderFunctions extends DefaultFunctions
         return $mediaFile;
     }
 
+    public function getBeautifulTitle(){
+        $title=$this->getPath();
+        if($title==='') return '<root>';
+        $title = preg_replace('/^\d+___/uis','',$title);
+        $title = preg_replace('/^(\d{4})_(\d{2})_(\d{2})_(.*)/uis', '$3.$2.$1 $4', $title );
+        $title = preg_replace('/_/uis',' ',$title);
+        return $title;
+    }
+
     public function addNewMediaFile($filename) {
         $mediaFile = new MediaFile();
         $mediaFile->setFileName($filename);

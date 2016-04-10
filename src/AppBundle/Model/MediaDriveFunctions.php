@@ -73,8 +73,8 @@ class MediaDriveFunctions extends DefaultFunctions
                 ->setMediaDrive($this)
                 ->setPath($folderDir);
 
-#            $this->em->persist($mediaFolder);
-#            $this->em->flush();
+#            $this->em->persistmediaFolder);
+#            $this->em->flush()
         }
         return $mediaFolder;
     }
@@ -107,6 +107,11 @@ class MediaDriveFunctions extends DefaultFunctions
                     $this->em->persist($mediaFile);
                     $this->em->flush();
                 }
+
+                # This checks existance and filedate, so comes free in performance to call
+                $mediaFile->createThumbnail('thumbnail');
+                $mediaFile->createThumbnail('preview');
+
             }
         }
     }

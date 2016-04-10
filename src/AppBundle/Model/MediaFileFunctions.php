@@ -66,15 +66,15 @@ class MediaFileFunctions extends DefaultFunctions
 
     public function getThumbBaseFolder($variant)
     {
-        if($variant=='thumbnail') return $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder();
-        if($variant=='preview') return $this->getMediaFolder()->getMediaDrive()->getPreviewBaseFolder();
+        if ($variant == 'thumbnail') return $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder();
+        if ($variant == 'preview') return $this->getMediaFolder()->getMediaDrive()->getPreviewBaseFolder();
         die('Shit: ' . __FILE__ . '|' . __LINE__);
     }
 
     public function initOrientation()
     {
-        if($this->getMediaType()=='movie') {
-        $this->setOrientation(1);
+        if ($this->getMediaType() == 'movie') {
+            $this->setOrientation(1);
             return $this;
         }
 
@@ -83,7 +83,7 @@ class MediaFileFunctions extends DefaultFunctions
         #$img = @imagecreatefromjpeg($filename);
         $exif = @exif_read_data($filename);
         if (!isset($exif['Orientation'])) {
-            $cmd = '/usr/local/bin/exiftool  -exif:Orientation -n -j ' . "'$filename'";
+            $cmd = 'exiftool  -exif:Orientation -n -j ' . "'$filename'";
             $tmp = @json_decode(`$cmd`)[0]->Orientation;
             $exif = array(
                 'Orientation' => $tmp
@@ -93,45 +93,49 @@ class MediaFileFunctions extends DefaultFunctions
         return $this;
     }
 
-    public function getVariantFileName($variant){
-        if($variant=='thumbnail') return $this->getThumbFileName();
-        if($variant=='preview') return $this->getPreviewFileName();
-        die('Shit: ' . __FILE__ . '|' . __LINE__);
-    }
-    public function setVariantFileName($variant, $fileName){
-        if($variant=='thumbnail') return $this->setThumbFileName($fileName);
-        if($variant=='preview') return $this->setPreviewFileName($fileName);
+    public function getVariantFileName($variant)
+    {
+        if ($variant == 'thumbnail') return $this->getThumbFileName();
+        if ($variant == 'preview') return $this->getPreviewFileName();
         die('Shit: ' . __FILE__ . '|' . __LINE__);
     }
 
-    public function createThumbnail($variant){
+    public function setVariantFileName($variant, $fileName)
+    {
+        if ($variant == 'thumbnail') return $this->setThumbFileName($fileName);
+        if ($variant == 'preview') return $this->setPreviewFileName($fileName);
+        die('Shit: ' . __FILE__ . '|' . __LINE__);
+    }
+
+    public function createThumbnail($variant)
+    {
 
         $thumbDir = $this->getThumbBaseFolder($variant) . '/' . $this->getMediaFolder()->getPath();
 
-        if( ! is_dir($thumbDir) ){
+        if (!is_dir($thumbDir)) {
             \AppBundle\Model\FileHelper::mkdir_p($thumbDir);
         }
 
-        if($this->getMediaType()=='image') {
+        if ($this->getMediaType() == 'image') {
             $this->setVariantFileName($variant, $this->getFileName());
-            $thumbFile = $thumbDir .'/' . $this->getVariantFileName($variant);
+            $thumbFile = $thumbDir . '/' . $this->getVariantFileName($variant);
             $hiresFile = $this->getFullPath();
-            $this->updateThumbnailImageFile($variant, $variant == 'thumbnail' ? 200:900, $hiresFile, $thumbFile);
+            $this->updateThumbnailImageFile($variant, $variant == 'thumbnail' ? 200 : 900, $hiresFile, $thumbFile);
         }
-        if($this->getMediaType()=='movie') {
+        if ($this->getMediaType() == 'movie') {
             $this->setVariantFileName($variant, $this->getFileName() . '.gif');
-            $thumbFile = $thumbDir .'/' . $this->getVariantFileName($variant);
+            $thumbFile = $thumbDir . '/' . $this->getVariantFileName($variant);
             $hiresFile = $this->getFullPath();
-            $this->updateThumbnailMovieFile($variant, $variant == 'thumbnail' ? 200:400, $hiresFile, $thumbFile);
+            $this->updateThumbnailMovieFile($variant, $variant == 'thumbnail' ? 200 : 400, $hiresFile, $thumbFile);
         }
 
         return $this;
     }
 
-    function updateThumbnailImageFile($variant,$thumbHeight, $hiresFile, $thumbFile )
+    function updateThumbnailImageFile($variant, $thumbHeight, $hiresFile, $thumbFile)
     {
 
-        if( @filemtime($thumbFile) == @filemtime($hiresFile) ) return true;
+        if (@filemtime($thumbFile) == @filemtime($hiresFile)) return true;
 
 #        $this->createThumbdirectory();
 
@@ -144,7 +148,7 @@ class MediaFileFunctions extends DefaultFunctions
                 break;
             case IMAGETYPE_JPEG:
                 $originalGdImage = $this->imagecreatefromjpegexif($hiresFile);
-                if( ! is_resource($originalGdImage) ) return false;
+                if (!is_resource($originalGdImage)) return false;
                 $originalWidth = ImageSX($originalGdImage);
                 $originalHeight = ImageSY($originalGdImage);
                 break;
@@ -175,8 +179,7 @@ class MediaFileFunctions extends DefaultFunctions
 
         $orientation = $this->getOrientation();
 
-        if ($img && $orientation)
-        {
+        if ($img && $orientation) {
 
             if ($orientation == 6 || $orientation == 5)
                 $img = imagerotate($img, 270, null);
@@ -193,23 +196,24 @@ class MediaFileFunctions extends DefaultFunctions
     }
 
 
-    function updateThumbnailMovieFile($variant, $thumbHeight, $filepathOriginal, $filepathThumb )
+    function updateThumbnailMovieFile($variant, $thumbHeight, $filepathOriginal, $filepathThumb)
     {
 
-        if( @filemtime($filepathThumb) == @filemtime($filepathOriginal) ) return true;
+        if (@filemtime($filepathThumb) == @filemtime($filepathOriginal)) return true;
 
         $movie2gifBinary = __DIR__ . '/../Resources/bin/movie2gif.sh';
 
         $cmd = "{$movie2gifBinary} \"{$filepathOriginal}\" \"{$filepathThumb}\"";
         `{$cmd}`;
-        if(file_exists($filepathThumb)) {
+        if (file_exists($filepathThumb)) {
             touch($filepathThumb, filemtime($filepathOriginal));
         }
         return true;
     }
 
-    public function getFullPath() {
-        return $this->getBaseFolder() . '/' . $this->getMediaFolder()->getPath() .'/' . $this->getFileName();
+    public function getFullPath()
+    {
+        return $this->getBaseFolder() . '/' . $this->getMediaFolder()->getPath() . '/' . $this->getFileName();
     }
 
     public function getGpsCoordinates()
@@ -243,21 +247,31 @@ class MediaFileFunctions extends DefaultFunctions
     }
 
     public function getFullWebPath($variant){
-        switch ($variant){
+        return '/' . $this->getFullFilePath($variant);
+    }
+
+    public function getFullFilePath($variant)
+    {
+        switch ($variant) {
             case "preview":
-                return
-                    '/' .
-                    $this->getMediaFolder()->getMediaDrive()->getPreviewBaseFolder() .'/' .
-                    $this->getMediaFolder()->getPath() . '/' .
-                    $this->getPreviewFileName();
-                    break;
+                if ($this->getMediaType() == 'movie') {
+                    return
+                        $this->getMediaFolder()->getMediaDrive()->getMediaFileBaseFolder() . '/' .
+                        $this->getMediaFolder()->getPath() . '/' .
+                        $this->getFileName();
+                } else if ($this->getMediaType() == 'image') {
+                    return
+                        $this->getMediaFolder()->getMediaDrive()->getPreviewBaseFolder() . '/' .
+                        $this->getMediaFolder()->getPath() . '/' .
+                        $this->getPreviewFileName();
+                }
+                break;
             case "thumbnail":
                 return
-                    '/' .
-                    $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder() .'/' .
+                    $this->getMediaFolder()->getMediaDrive()->getThumbnailBaseFolder() . '/' .
                     $this->getMediaFolder()->getPath() . '/' .
                     $this->getThumbFileName();
-                    break;
+                break;
             default:
                 die('Hm? ' . __FILE__ . ":" . __LINE__);
                 break;

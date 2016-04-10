@@ -1,11 +1,8 @@
- <div id="wrapper">
-        <div id="container">
-            <ul>
-            {% for mediaFolder in mediaFolders %}
-                <li class="files" data-href="http://127.0.0.1:8000/listimages/1/{{ mediaFolder.getId() }}">
-                    ƒ {{ mediaFolder.getPath() }}
-                </li>
-            {% endfor %}
-                </ul>
-        </div>
-</div>
+<ul>
+    {% for mediaFolder in mediaFolders %}
+        {% set folderTitle = mediaFolder.getBeautifulTitle() %}
+        <li class="files" data-href="/listimages/1/{{ mediaFolder.getId() }}">
+            ƒ {{ folderTitle }}
+        </li>
+    {% endfor %}
+</ul>
